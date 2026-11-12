@@ -1,0 +1,20 @@
+# docker-compose.yml
+#
+# PURPOSE
+#   Runs the only infrastructure ClaimCheck needs: one PostgreSQL server with the pgvector extension.
+#   It serves three jobs at once: relational data (expenses), vectors (policy_chunks) and
+#   LangGraph checkpoints (conversation state).
+#
+# SHOULD CONTAIN
+#   - One service, e.g. `db`, using a pgvector-enabled Postgres image (the official pgvector/pgvector
+#     images, Postgres 16 or newer).
+#   - POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB read from the .env file (never hardcoded here).
+#   - Port 5432 mapped to the host so the backend running on your machine can connect.
+#   - A named volume for the data directory so data survives `docker compose down`.
+#   - A healthcheck using `pg_isready` so you can tell when the DB is ready.
+#   - (Optional) an init script mounted into /docker-entrypoint-initdb.d that creates a second
+#     database for tests and enables the `vector` extension.
+#
+# AVOID
+#   - Containerizing the backend/frontend today; run them directly for fast reload.
+#   - Committing real passwords.

@@ -1,0 +1,12 @@
+{
+  "//": [
+    "frontend/package.json",
+    "PURPOSE: Node project manifest for the React app.",
+    "HOW TO CREATE: easiest is to scaffold with Vite's react-ts template into this folder,",
+    "  which generates this file plus tsconfig.json, vite.config.ts, index.html and src/main.tsx.",
+    "  Overwrite these description-only files, but keep src/components, src/hooks, types.ts and api.ts.",
+    "SHOULD CONTAIN: name, private, type=module; scripts dev/build/preview (+ lint);",
+    "  dependencies react and react-dom (18.x); devDependencies typescript, vite, @vitejs/plugin-react, @types/react, @types/react-dom.",
+    "AVOID: adding Redux, a router or a UI kit today. Plain React is the point."
+  ]
+}

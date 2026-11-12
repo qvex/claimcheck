@@ -1,0 +1,23 @@
+# .gitignore
+#
+# PURPOSE
+#   Keeps secrets, dependencies and build output out of git.
+#   (Entries are included because forgetting `.env` is the one mistake that leaks your API key.)
+#
+# Secrets
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node / Vite
+node_modules/
+dist/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

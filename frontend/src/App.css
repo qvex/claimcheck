@@ -1,0 +1,14 @@
+/*
+ * src/App.css
+ *
+ * PURPOSE
+ *   The one stylesheet for the whole app. Styling is NOT today's learning goal, so keep it under ~150 lines.
+ *
+ * SHOULD CONTAIN
+ *   - A few CSS variables (colors, spacing) at :root.
+ *   - Two-column grid layout that stacks into one column on narrow screens.
+ *   - Chat bubbles (user vs assistant), tool-activity chip, confirm card highlight.
+ *   - Table, form and button basics; loading and error text styles.
+ *
+ * AVOID: a CSS framework today.
+ */
