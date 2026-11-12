@@ -1,15 +1,11 @@
 /**
  * src/components/SummaryBar.tsx
  *
- * PURPOSE
- *   Current-month totals per category, plus the grand total, at a glance.
+ * GOAL: This month's spending by category, at a glance.
  *
- * PROPS: refreshKey
+ * CONSTRAINTS
+ *   - Must agree with what the agent says when asked for monthly totals.
  *
- * SHOULD CONTAIN
- *   - Fetches api.getSummary(currentMonth) when refreshKey changes.
- *   - Small tiles, one per category with a non-zero total, sorted by amount.
- *   - It must agree with the agent's answer to "how much on food this month?" (an acceptance test).
- *
- * FIRST TO CUT if you're behind schedule.
+ * DONE WHEN
+ *   - The 'food this month' acceptance test matches this component's number.
  */

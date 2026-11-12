@@ -1,16 +1,20 @@
 /**
  * src/App.tsx
  *
- * PURPOSE
- *   Top-level layout and the owner of the state shared by both sides of the page.
+ * GOAL: Page layout, and the owner of the state that both halves of the page need.
  *
- * SHOULD CONTAIN
- *   - Two-column layout: <ChatPanel /> on the left; <SummaryBar />, <AddExpenseForm /> and <ExpenseTable /> on the right.
- *   - `threadId` state: read from localStorage on first load (create a new id with crypto.randomUUID()
- *     if missing). It's passed to ChatPanel, so a refresh continues the same conversation.
- *   - `refreshKey` state (a number): incremented when the agent saves an expense or the manual form submits.
- *     Passed to ExpenseTable and SummaryBar so they refetch. This is "lifting state up".
- *   - (Optional) a "New conversation" button that resets threadId.
+ * CONTRACT
+ *   The layout and component list in the "ClaimCheck - Spec Sheet" note, section 8.
  *
- * AVOID: fetching data here. Children own their own data loading.
+ * CONSTRAINTS
+ *   - When the agent saves an expense, the table and summary update without a page reload.
+ *   - Refreshing the browser continues the same conversation.
+ *   - App owns shared state only. Children load their own data.
+ *
+ * DONE WHEN
+ *   - Approve an expense in chat -> the table updates. Reload -> the chat thread continues.
+ *
+ * LOOK UP
+ *   - React: lifting state up
+ *   - React: sharing state between components
  */

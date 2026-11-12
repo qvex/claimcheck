@@ -1,16 +1,16 @@
 /**
  * src/components/MessageList.tsx
  *
- * PURPOSE
- *   Renders the conversation: user bubbles, assistant bubbles (growing as tokens stream in) and small
- *   tool-activity chips.
+ * GOAL: Show the conversation clearly, including when the agent is thinking or using a tool.
  *
- * PROPS: messages: ChatMessage[], status
+ * CONSTRAINTS
+ *   - List items have stable identities.
+ *   - Model output is rendered as text, never as HTML.
+ *   - An empty conversation tells the user what to try.
  *
- * SHOULD CONTAIN
- *   - A list rendered with a stable `key` per message (the message id, never the array index).
- *   - A typing indicator while status === "streaming" and the last assistant message is still empty.
- *   - An empty state ("Try: spent 450 on lunch yesterday").
+ * DONE WHEN
+ *   - Long conversations render correctly, and tool activity is distinguishable from replies.
  *
- * AVOID: rendering assistant text as HTML (no dangerouslySetInnerHTML). Plain text is safe.
+ * LOOK UP
+ *   - React: rendering lists and keys
  */

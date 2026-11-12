@@ -1,16 +1,19 @@
-"""REST endpoints for expenses (used by the table, summary bar and manual form).
+"""GOAL: Expose expenses over REST for the table, the summary and the manual form.
 
-SHOULD CONTAIN (APIRouter with prefix "/expenses", tag "expenses")
-- GET    /expenses            ?from=&to=&category=  -> list[Expense]
-- POST   /expenses            body ExpenseCreate     -> Expense, status 201, source="manual"
-- DELETE /expenses/{id}                               -> 204, or 404 if missing
-- GET    /expenses/summary    ?month=YYYY-MM         -> SummaryResponse (validate the month format)
-- Every handler takes `db = Depends(get_db)` and delegates to repository.py.
-- Explicit `response_model` and `status_code` on each route, so /docs is accurate.
+CONTRACT
+  The /expenses rows in the "ClaimCheck - Spec Sheet" note, section 7.
 
-AVOID
-- Querying the DB directly in handlers.
-- Returning 200 with an error message in the body. Use proper HTTP status codes (HTTPException).
+CONSTRAINTS
+  - Handlers are thin: validate, delegate to the repository, shape the response.
+  - Status codes carry meaning (created, no content, not found, validation error). No errors smuggled inside 200s.
+  - Every route declares its response shape, so /docs is accurate.
 
-CONCEPTS PRACTICED: REST resource design, status codes, query/path params, response models.
+DONE WHEN
+  - Every row of the API table works from /docs, including the failure cases.
+  - test_expenses_api.py passes.
+
+LOOK UP
+  - FastAPI APIRouter
+  - HTTPException
+  - response_model / status_code
 """

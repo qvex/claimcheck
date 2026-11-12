@@ -1,21 +1,24 @@
-"""Translates LangGraph's streaming output into the app's 5 SSE event types.
+"""GOAL: Translate LangGraph's stream into the app's own small set of SSE events, so the frontend never depends on LangGraph internals.
 
-This is the boundary layer: the frontend never sees LangGraph's internal format.
+CONTRACT
+  The SSE event types in the "ClaimCheck - Spec Sheet" note, section 7.
 
-SHOULD CONTAIN
-- An async generator `stream_events(graph, graph_input, config)` that consumes the graph's async stream
-  (stream modes "messages" for tokens and "updates" for node results) and yields SSE-formatted strings:
-    event: token      data: {"text": ...}           <- only LLM tokens from the "agent" node (filter on node metadata)
-    event: tool       data: {"name": ..., "args": ...}  <- when the agent decides to call a tool
-    event: interrupt  data: {"expense": {...}}       <- when an update contains the interrupt payload
-    event: done       data: {}
-    event: error      data: {"message": ...}
-- A tiny helper that formats one SSE frame: "event: <type>", newline, "data: <json>", blank line.
-- try/except around the whole stream: on failure emit `error`, and always end with `done` or `error`.
+CONSTRAINTS
+  - Only the assistant's reply tokens are streamed as text (not tool internals or other nodes' output).
+  - The client learns when a tool starts, when confirmation is needed, and when the turn is over.
+  - Every stream ends with exactly one terminal event (done or error), no matter what fails.
+  - Everything sent is plain JSON (watch out for Decimal and date).
 
-AVOID
-- Sending raw LangGraph objects to the client.
-- JSON-encoding Decimal/date without a proper encoder.
+DONE WHEN
+  - curl output shows well-formed frames for a normal turn, a confirmation pause and a forced error.
 
-CONCEPTS PRACTICED: async generators, SSE protocol, stream modes, interrupt detection.
+FRAMEWORK HINTS (only the parts that would otherwise block you)
+  - LangGraph can stream several modes at once. One gives token-level message chunks, another gives per-node updates.
+  - Message chunks carry metadata telling you which node produced them. Use it to filter.
+  - An interrupt shows up in the updates stream under a special key.
+  - An SSE frame is 'event:' and 'data:' lines followed by a blank line.
+
+LOOK UP
+  - LangGraph: streaming (stream_mode)
+  - MDN: Server-sent events format
 """

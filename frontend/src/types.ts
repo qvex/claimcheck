@@ -1,16 +1,19 @@
 /**
  * src/types.ts
  *
- * PURPOSE
- *   Shared TypeScript types that mirror the backend's Pydantic schemas. One source of truth for the frontend.
+ * GOAL: Mirror the backend's contract in TypeScript, so mismatches are caught at compile time.
  *
- * SHOULD CONTAIN
- *   - `Category`: a union of the six category string literals (must match the backend enum).
- *   - `Expense` and `ExpenseCreate` (amount as a string or number; know which, and why: Decimal arrives as a JSON string).
- *   - `Summary`: month + totals per category.
- *   - `ChatMessage`: id, role ("user" | "assistant" | "tool"), text, optional tool name.
- *   - `SseEvent`: a DISCRIMINATED UNION over the 5 event types (token | tool | interrupt | done | error),
- *     each with its own data shape, so a switch statement on `type` is fully type-checked.
- *   - `ChatStatus`: "idle" | "streaming" | "awaiting_confirm" | "error".
- *   - `Decision`: "approve" | "reject" | "edit".
+ * CONTRACT
+ *   The backend schemas and the SSE event types (the "ClaimCheck - Spec Sheet" note, section 7).
+ *
+ * CONSTRAINTS
+ *   - Values that can only be one of a few strings are union types, not plain string.
+ *   - SSE events are modeled so that switching on the event type gives you correctly typed data in each branch.
+ *   - Decide how money is represented on the client, given how Decimal is serialized to JSON, and stay consistent.
+ *
+ * DONE WHEN
+ *   - Changing a field name breaks the build in every place that uses it.
+ *
+ * LOOK UP
+ *   - TypeScript discriminated unions
  */

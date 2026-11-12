@@ -1,17 +1,13 @@
 /**
  * src/components/ChatPanel.tsx
  *
- * PURPOSE
- *   The left column: the conversation with the agent.
+ * GOAL: The conversation column: input, message history and the confirmation step.
  *
- * PROPS: threadId, onExpenseSaved
+ * CONSTRAINTS
+ *   - The user can't send while a reply is streaming or a confirmation is pending.
+ *   - The newest message is always visible.
+ *   - Errors are visible and recoverable.
  *
- * SHOULD CONTAIN
- *   - Calls useChatStream(...) and renders <MessageList /> and, ONLY when status === "awaiting_confirm",
- *     <ConfirmCard />.
- *   - A controlled text input + Send button. Submit on Enter; disable while streaming or awaiting confirmation.
- *   - Error display with a "try again" affordance.
- *   - Auto-scroll to the newest message (a ref + an effect).
- *
- * CONCEPTS PRACTICED: composition, controlled inputs, conditional rendering, refs.
+ * DONE WHEN
+ *   - The acceptance tests in spec section 12 that involve chat all pass from this UI.
  */

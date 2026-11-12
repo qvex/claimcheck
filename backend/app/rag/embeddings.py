@@ -1,11 +1,13 @@
-"""Thin wrapper around the embedding model.
+"""GOAL: One place that turns text into vectors, so the rest of the code doesn't care which provider you use.
 
-SHOULD CONTAIN
-- `embed_texts(texts: list[str]) -> list[list[float]]` for documents (batched).
-- `embed_query(text: str) -> list[float]` for search queries (some providers distinguish document vs query).
-- Construction of the provider's embedding client from settings (EMBEDDING_MODEL, LLM_API_KEY).
-- A check that the returned vector length == settings.EMBEDDING_DIM, with a clear error if not
-  (a mismatch with the DB column is a classic first-run bug).
+CONSTRAINTS
+  - Documents and queries may need different handling. Check your provider's guidance.
+  - A dimension mismatch with the database column is caught here, with a clear message.
+  - Easy to replace with a fake in tests.
 
-WHY A WRAPPER: swapping providers later touches one file, and tests can patch one function.
+DONE WHEN
+  - A REPL call returns a vector of the configured dimension.
+
+LOOK UP
+  - Your provider's embeddings docs (LangChain integration)
 """

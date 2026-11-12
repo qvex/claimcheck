@@ -1,9 +1,8 @@
-"""Endpoint to (re)ingest the policy document into the vector table.
+"""GOAL: Trigger (re)ingestion of the policy document.
 
-SHOULD CONTAIN
-- POST /policy/ingest -> {"chunks": n}
-  Calls `app.rag.ingest.ingest_policy(...)`, which reads data/policy.md, chunks, embeds and stores it.
-- Idempotent behavior: running it twice must not duplicate rows (ingest replaces old chunks).
+CONSTRAINTS
+  - Safe to call repeatedly: the end state is the same whether you call it once or five times.
 
-NOTE: in a real system this would be an admin-only or offline job. Here it's an endpoint for convenience.
+DONE WHEN
+  - Calling it twice leaves the same number of chunks as calling it once.
 """

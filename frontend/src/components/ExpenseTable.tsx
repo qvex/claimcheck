@@ -1,16 +1,18 @@
 /**
  * src/components/ExpenseTable.tsx
  *
- * PURPOSE
- *   Shows saved expenses (newest first) with a delete action.
+ * GOAL: Show saved expenses and let the user delete them.
  *
- * PROPS: refreshKey (refetch whenever it changes)
+ * CONSTRAINTS
+ *   - Loading, error and empty states each look intentional.
+ *   - Refreshes when told to by the parent.
+ *   - A slow, outdated response can never overwrite a newer one.
+ *   - Money is formatted for India (₹, Indian digit grouping).
  *
- * SHOULD CONTAIN
- *   - Data loading in useEffect via api.listExpenses(), with refreshKey in the dependency array.
- *   - All three UI states: loading, error (with a retry button) and empty ("No expenses yet").
- *   - Rows keyed by expense id; amount formatted as currency (Intl.NumberFormat with en-IN / INR).
- *   - A source badge (agent vs manual).
- *   - Delete with a confirm() prompt; then refetch or remove the row locally.
- *   - Effect cleanup that ignores late responses (an "ignore" flag or AbortController), to avoid race conditions.
+ * DONE WHEN
+ *   - Adding or deleting from anywhere is reflected here, and killing the backend shows a clear error with a retry.
+ *
+ * LOOK UP
+ *   - React: fetching data in effects and avoiding race conditions
+ *   - Intl.NumberFormat
  */

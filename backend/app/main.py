@@ -1,22 +1,17 @@
-"""Application entry point: creates and wires the FastAPI app.
+"""GOAL: Assemble the application. Every router, middleware and startup task gets wired up here.
 
-Run with: uvicorn app.main:app --reload   (from the backend/ directory)
+CONSTRAINTS
+  - No business logic or queries in this file.
+  - Expensive things (DB setup, the compiled agent graph) are created once at startup and reused, never per request.
+  - The React dev server must be able to call the API from the browser.
+  - Grows in stages: health only -> + tables -> + checkpointer and graph (see the build order).
 
-SHOULD CONTAIN
-- Creating the FastAPI instance (a title/version shows up nicely in /docs).
-- CORS middleware allowing `settings.FRONTEND_ORIGIN` (the Vite dev server), so the browser can call the API.
-- Including every router from `app.routes` (health, expenses, chat, policy).
-- A lifespan handler (startup/shutdown) that:
-    1. ensures the `vector` extension exists and creates ORM tables (Base.metadata.create_all),
-    2. opens the async Postgres connection used by the LangGraph checkpointer and calls its `setup()`
-       (creates checkpoint tables),
-    3. builds the compiled graph once via `app.agent.graph.build_graph(checkpointer)` and stores it on
-       `app.state` so routes can reuse it,
-    4. closes connections on shutdown.
+DONE WHEN
+  - `uvicorn app.main:app --reload` starts cleanly, and /docs lists every route.
+  - Restarting the server doesn't lose data or duplicate setup.
 
-AVOID
-- Business logic or SQL here. This file only assembles pieces.
-- Building the graph per request. Build it once at startup.
-
-CONCEPTS PRACTICED: app factory/wiring, middleware, lifespan events, shared app state.
+LOOK UP
+  - FastAPI lifespan events
+  - FastAPI CORS middleware
+  - FastAPI app.state
 """

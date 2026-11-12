@@ -1,16 +1,14 @@
-"""System prompt for the expense agent.
+"""GOAL: Tell the model how to behave: when to use which tool, and what it must never do.
 
-SHOULD CONTAIN
-- `SYSTEM_PROMPT`: a template with a `{today}` placeholder (the LLM needs it to resolve "yesterday").
-- Rules the prompt must state clearly:
-    1. New spending -> always call `add_expense` (the app will ask the user to confirm).
-    2. Never invent or guess amounts or dates. If one is missing, ask a clarifying question instead.
-    3. Spending questions -> call `query_expenses`. Never do arithmetic from memory.
-    4. Policy questions -> call `search_policy` and cite the section name in the answer.
-    5. Currency defaults to INR. Keep answers short.
-- A function like `build_system_message(today: date)` that fills the template.
+CONTRACT
+  The 'system prompt essentials' in the "ClaimCheck - Spec Sheet" note, section 5.
 
-AVOID
-- Hardcoding the date.
-- Huge prompts. Tool docstrings also reach the LLM, so don't repeat them here.
+CONSTRAINTS
+  - The model must know today's date (to resolve 'yesterday'), and it must not be hardcoded.
+  - The model must never invent amounts or dates. It asks a clarifying question instead.
+  - Policy answers cite their source section.
+  - Don't repeat what the tool descriptions already say. The model sees both.
+
+DONE WHEN
+  - The acceptance tests about missing amounts and policy citations (spec section 12) pass.
 """

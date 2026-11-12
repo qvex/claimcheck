@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy>=2.0
+psycopg[binary]
+pgvector
+langgraph
+langgraph-checkpoint-postgres
+langchain-google-genai
+
+[dev]
+pytest
+httpx

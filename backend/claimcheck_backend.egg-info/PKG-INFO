@@ -1,0 +1,17 @@
+Metadata-Version: 2.4
+Name: claimcheck-backend
+Version: 0.1.0
+Requires-Python: >=3.11
+Requires-Dist: fastapi
+Requires-Dist: uvicorn[standard]
+Requires-Dist: pydantic
+Requires-Dist: pydantic-settings
+Requires-Dist: sqlalchemy>=2.0
+Requires-Dist: psycopg[binary]
+Requires-Dist: pgvector
+Requires-Dist: langgraph
+Requires-Dist: langgraph-checkpoint-postgres
+Requires-Dist: langchain-google-genai
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: httpx; extra == "dev"

@@ -1,18 +1,18 @@
-"""SQLAlchemy ORM models: the database schema in Python.
+"""GOAL: Express the database schema as ORM models.
 
-SHOULD CONTAIN
-- `Expense` -> table `expenses`, matching the spec's SQL:
-    id (big int PK), amount (Numeric(12, 2), CHECK amount > 0), currency (3 chars, default 'INR'),
-    category (text), description (text), spent_on (date), source ('agent' | 'manual', CHECK constraint),
-    created_at (timestamptz, server default now()).
-    Indexes: spent_on; (category, spent_on).
-- `PolicyChunk` -> table `policy_chunks`:
-    id, section (text), content (text), embedding (pgvector `Vector(settings.EMBEDDING_DIM)`).
-- Use SQLAlchemy 2.0 typed style (Mapped[...] / mapped_column).
+CONTRACT
+  The tables in the "ClaimCheck - Spec Sheet" note, section 6 (Data Model). Translate that SQL; don't redesign it.
 
-AVOID
-- Float for money. Use Numeric in the DB and Decimal in Python.
-- Defining LangGraph checkpoint tables. The checkpointer creates and owns those.
+CONSTRAINTS
+  - The database itself enforces the rules (constraints), not just Python.
+  - Money is exact. No floating point anywhere in the path.
+  - The vector column's size must match the embedding model's output dimension.
+  - Don't model the LangGraph checkpoint tables. The checkpointer owns them.
 
-CONCEPTS PRACTICED: relational modeling, constraints, indexes, vector columns.
+DONE WHEN
+  - The tables exist with the expected columns, constraints and indexes when you inspect them in psql.
+
+LOOK UP
+  - SQLAlchemy 2.0 typed mappings (Mapped / mapped_column)
+  - pgvector's SQLAlchemy integration
 """

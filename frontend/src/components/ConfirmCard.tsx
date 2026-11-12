@@ -1,18 +1,16 @@
 /**
  * src/components/ConfirmCard.tsx
  *
- * PURPOSE
- *   The human-in-the-loop UI. Shows the expense the agent parsed and waits for the user's decision before
- *   anything is saved.
+ * GOAL: The human-in-the-loop moment. The user sees exactly what will be saved, and decides.
  *
- * PROPS: expense (the interrupt payload), onDecision(decision, editedExpense?)
+ * CONTRACT
+ *   Supports the three decisions the backend accepts: approve, edit, reject.
  *
- * SHOULD CONTAIN
- *   - A read-only summary by default: amount (formatted with currency), category, date, description.
- *   - Approve / Edit / Reject buttons.
- *   - Edit mode: a controlled mini-form pre-filled with the parsed values and basic validation
- *     (amount > 0, date present); Save sends decision "edit" with the edited values.
- *   - Buttons disabled while the resume request is in flight (prevents double submission).
+ * CONSTRAINTS
+ *   - Nothing is saved without an explicit user action.
+ *   - Edited values are validated before they're sent.
+ *   - A decision can't be submitted twice.
  *
- * CONCEPTS PRACTICED: conditional rendering, local component state, controlled forms, preventing double submit.
+ * DONE WHEN
+ *   - Approve saves one row, reject saves none, edit saves the edited values.
  */

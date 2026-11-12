@@ -1,19 +1,17 @@
-"""Database plumbing: engine, sessions and the FastAPI session dependency.
+"""GOAL: Give the rest of the backend a safe way to talk to Postgres.
 
-SHOULD CONTAIN
-- `engine`: a SQLAlchemy 2.0 engine created from settings.DATABASE_URL (psycopg driver).
-- `SessionLocal`: a sessionmaker bound to the engine.
-- `Base`: the DeclarativeBase that all ORM models in models.py inherit from.
-- `get_db()`: a generator dependency that yields a session and always closes it (try/finally).
-  Routes receive it via `Depends(get_db)`.
-- (Optional) a small helper that opens a session outside a request, for agent tools and ingest scripts.
+CONSTRAINTS
+  - Each request gets its own session, and it's always cleaned up, even on errors.
+  - Code that runs outside a request (agent tools, the ingest script) also needs a way to get a session.
+  - Models elsewhere need a shared declarative base to inherit from.
 
-DESIGN NOTE
-- Use the plain synchronous ORM today; FastAPI runs sync dependencies in a threadpool, which is fine.
-  The LangGraph checkpointer uses its own async connection, set up in main.py, and that's OK.
+DONE WHEN
+  - From a REPL you can open a session, run a trivial query and close it.
 
-AVOID
-- A global session shared across requests (sessions are not thread-safe).
+FRAMEWORK HINTS (only the parts that would otherwise block you)
+  - Plain synchronous SQLAlchemy is fine today. FastAPI runs sync dependencies in a threadpool. The LangGraph checkpointer manages its own async connection separately.
 
-CONCEPTS PRACTICED: connection management, dependency injection, unit-of-work sessions.
+LOOK UP
+  - SQLAlchemy 2.0 engine and sessions
+  - FastAPI dependencies with yield
 """

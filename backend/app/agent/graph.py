@@ -1,17 +1,17 @@
-"""Graph wiring: turns nodes + edges into a compiled, checkpointed agent.
+"""GOAL: Wire the nodes into a compiled, persistent agent.
 
-SHOULD CONTAIN
-- `build_graph(checkpointer)`:
-    - StateGraph(AgentState)
-    - add nodes: "agent", "confirm", "tools"
-    - edges: START -> agent; conditional agent -> {confirm, tools, END} via route_after_agent;
-      conditional confirm -> {tools, agent} via route_after_confirm; tools -> agent
-    - compile(checkpointer=checkpointer) and return it
-- It should read exactly like the agent-graph diagram in the spec. If it doesn't, one of them is wrong.
+CONTRACT
+  Must match the agent graph in the "ClaimCheck - Spec Sheet" note, section 5, exactly. If the code and the diagram disagree, fix one of them.
 
-TIP
-- Print `graph.get_graph().draw_mermaid()` once and compare it with your spec diagram.
+CONSTRAINTS
+  - Built by hand from nodes and edges. Don't use the prebuilt ReAct agent (compare with it afterwards if you're curious).
+  - Takes its persistence (checkpointer) from outside, so tests can use an in-memory one and the server a Postgres one.
 
-AVOID
-- Using the prebuilt `create_react_agent` here. Wire it by hand to learn nodes and edges. (Compare afterwards.)
+DONE WHEN
+  - The Mermaid diagram LangGraph generates from your compiled graph matches the spec's diagram.
+  - In a script, a second message in the same thread remembers the first.
+
+LOOK UP
+  - LangGraph StateGraph, compile(checkpointer=...)
+  - get_graph().draw_mermaid()
 """

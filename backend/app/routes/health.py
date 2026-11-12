@@ -1,9 +1,5 @@
-"""Health check endpoint.
+"""GOAL: A cheap endpoint that proves the server is up. Ideally it also says whether the database is reachable.
 
-SHOULD CONTAIN
-- GET /health -> {"status": "ok"}.
-- (Nice to have) a cheap DB ping (SELECT 1) that reports "db": "ok" or "down", so you can tell
-  "API up but DB down" apart.
-
-WHY: the first thing you build. It proves the server, CORS and the frontend-to-backend call all work.
+DONE WHEN
+  - The React page can call it and display the result. This is your first end-to-end check.
 """

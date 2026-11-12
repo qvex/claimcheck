@@ -1,19 +1,18 @@
-"""Pydantic models: the API contract (what goes in and out over HTTP and to the agent tools).
+"""GOAL: Define the API's data contract: what the server accepts and returns.
 
-SHOULD CONTAIN
-- `Category`: a string Enum - food, travel, lodging, supplies, software, other.
-- `ExpenseCreate`: amount (Decimal, > 0), currency (default "INR", 3 letters), category (Category),
-  description (non-empty, length-limited), spent_on (date; consider rejecting future dates).
-- `Expense`: ExpenseCreate + id, source, created_at; configured to read from ORM objects (from_attributes).
-- `ExpenseFilters` (or plain query params): from/to dates, optional category.
-- `SummaryResponse`: month + totals per category (+ grand total).
-- `ChatRequest`: thread_id (str), message (non-empty str).
-- `ResumeRequest`: thread_id, decision ("approve" | "reject" | "edit"), optional `expense: ExpenseCreate`,
-  with a validator that requires `expense` when decision == "edit".
+CONTRACT
+  the "ClaimCheck - Spec Sheet" note: the categories (section 5), the API spec (section 7), and the resume decisions (approve / reject / edit).
 
-AVOID
-- Returning ORM objects directly from routes without a response model.
-- Duplicating these shapes by hand in tools. Reuse ExpenseCreate as the add_expense tool's args schema.
+CONSTRAINTS
+  - Invalid input is rejected with a 422 before any business logic runs.
+  - Business rules a client could violate (positive amounts, known categories, non-empty text, sensible dates) are validated here.
+  - An 'edit' decision without the edited expense must be rejected.
+  - Reuse shapes instead of duplicating them. The agent's add-expense tool should share the same input model.
 
-CONCEPTS PRACTICED: request/response validation, enums, custom validators, schema reuse.
+DONE WHEN
+  - Bad payloads sent from /docs produce clear 422 errors, and good ones round-trip unchanged.
+
+LOOK UP
+  - Pydantic v2 field constraints and validators
+  - Pydantic from_attributes
 """

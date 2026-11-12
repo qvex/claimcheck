@@ -1,12 +1,13 @@
-"""Vector similarity search over policy chunks using pgvector.
+"""GOAL: Given a question, return the most relevant policy chunks, with enough information to cite them.
 
-SHOULD CONTAIN
-- `search_policy(db, query: str, k: int = 3) -> list[{section, content, score}]`
-    embed_query(query) -> ORDER BY cosine distance to the stored embeddings -> LIMIT k.
-    Convert the distance into a similarity score for readability.
-- (Optional) a minimum-similarity threshold, so totally unrelated questions return nothing rather than
-  the "least bad" chunk.
+CONSTRAINTS
+  - Similarity is computed in the database, not by loading all vectors into Python.
+  - Decide what happens when nothing is relevant. Returning the 'least bad' chunk can mislead the model.
 
-NOTE: with ~6-20 rows, no vector index is needed (exact search is instant). Adding HNSW is a stretch
-goal; write down at what row count it starts to matter.
+DONE WHEN
+  - 'Can I claim a solo dinner?' returns the Meals section first.
+
+LOOK UP
+  - pgvector distance operators
+  - When an ANN index (HNSW) starts to matter
 """

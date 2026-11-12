@@ -1,12 +1,15 @@
-"""Shared pytest fixtures.
+"""GOAL: Shared test setup that makes tests fast, isolated and free.
 
-SHOULD CONTAIN
-- A fixture that points the app at TEST_DATABASE_URL, creates the tables before the test session and drops
-  them after (or truncates between tests).
-- A `db` session fixture.
-- A `client` fixture: FastAPI TestClient, with the `get_db` dependency overridden to use the test session.
-- A fake embedding function (deterministic vectors of the right dimension), patched in so tests never call
-  the real embedding API.
+CONSTRAINTS
+  - Tests never touch your dev database.
+  - Tests never call a real LLM or embedding API.
+  - Each test starts from a known state.
+  - API tests exercise the real routes, with the database dependency swapped for the test one.
 
-AVOID: tests that touch your dev database or the real LLM/embedding APIs.
+DONE WHEN
+  - The whole suite runs offline, and it passes twice in a row.
+
+LOOK UP
+  - pytest fixtures and scopes
+  - FastAPI TestClient and dependency_overrides
 """

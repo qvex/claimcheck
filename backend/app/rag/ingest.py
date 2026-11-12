@@ -1,16 +1,11 @@
-"""Loads data/policy.md into the policy_chunks table.
+"""GOAL: Load the policy document into the vector table, so it can be searched.
 
-SHOULD CONTAIN
-- `split_markdown_sections(text) -> list[(section_title, content)]`
-    A pure function that splits on "## " headings and skips the top-level title. Easy to unit test.
-- `ingest_policy(db, path) -> int`
-    read file -> split -> embed all chunks in one batch -> delete existing rows -> insert new rows
-    -> commit -> return the count.
-- A `__main__` entry point so it can also be run as `python -m app.rag.ingest`.
+CONSTRAINTS
+  - Each chunk is a self-contained, citable unit. Decide the chunking strategy and be able to justify it.
+  - Idempotent: re-running never creates duplicates.
+  - The text-splitting logic is testable without a database or an embedding API.
+  - Can be run from the command line as well as through the API.
 
-DESIGN NOTE
-- Chunk by heading, not by fixed token count: the sections are small and meaningful, and the section
-  name doubles as the citation.
-
-AVOID: appending on every run (duplicates). Ingest must be idempotent.
+DONE WHEN
+  - Running it twice yields the same chunk count. test_ingest.py passes.
 """

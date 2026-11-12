@@ -1,21 +1,25 @@
-"""Chat endpoints that run the LangGraph agent and stream results as Server-Sent Events.
+"""GOAL: Let the browser talk to the agent: start a turn, resume after a confirmation, and stream everything back live.
 
-SHOULD CONTAIN
-- POST /chat           body ChatRequest
-    Builds the run config with `configurable.thread_id` (this is what makes memory work), sends the user
-    message into the compiled graph (from app.state), and returns a StreamingResponse with media type
-    "text/event-stream" that wraps `agent.streaming.stream_events(...)`.
-- POST /chat/resume    body ResumeRequest
-    Resumes a paused (interrupted) run for the same thread_id by passing a LangGraph
-    `Command(resume=...)` that carries the decision (+ edited expense), and streams the rest the same way.
-- (Optional) GET /chat/{thread_id}/history that reads the checkpointed messages, so the UI can restore a
-  conversation after a refresh.
-- Response headers that disable caching/buffering for SSE (e.g. Cache-Control: no-cache).
+CONTRACT
+  The /chat and /chat/resume rows in the "ClaimCheck - Spec Sheet" note, section 7, plus the SSE event types listed there.
 
-AVOID
-- Letting an exception escape mid-stream (the browser just sees a broken stream).
-  streaming.py should emit an `error` event instead.
-- Building a new graph per request.
+CONSTRAINTS
+  - Each conversation is identified by the client's thread id. Same id means same memory.
+  - Responses stream as they're produced. The client never waits for the whole answer.
+  - A failure mid-stream reaches the client as an error event, not a dropped connection.
+  - Reuse the graph built at startup.
 
-CONCEPTS PRACTICED: streaming HTTP responses, thread-scoped agent memory, resuming interrupted graphs.
+DONE WHEN
+  - curl with -N against /chat shows events arriving incrementally.
+  - A paused conversation can be resumed and finishes correctly.
+
+FRAMEWORK HINTS (only the parts that would otherwise block you)
+  - Thread identity is passed to LangGraph through the run config's 'configurable' section.
+  - Resuming a paused graph means invoking it with a Command carrying the resume value, not with a new message.
+  - SSE responses need caching disabled.
+
+LOOK UP
+  - FastAPI StreamingResponse
+  - LangGraph: persistence / threads
+  - LangGraph: Command(resume=...)
 """

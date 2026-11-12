@@ -1,23 +1,22 @@
-# backend/pyproject.toml
-#
-# PURPOSE
-#   Python project metadata + dependencies for the backend. Install with uv or pip (editable install).
-#
-# SHOULD CONTAIN
-#   [project]
-#     name = "claimcheck-backend", a version, requires-python (3.11+)
-#     dependencies:
-#       fastapi, uvicorn[standard]          - web framework + ASGI server
-#       pydantic, pydantic-settings         - validation + settings from env
-#       sqlalchemy (2.x), psycopg[binary]   - ORM + Postgres driver
-#       pgvector                            - SQLAlchemy Vector column type
-#       langgraph                           - the agent graph
-#       langgraph-checkpoint-postgres       - Postgres checkpointer (conversation persistence)
-#       langchain-google-genai OR langchain-openai - chat + embedding models for your provider
-#   [project.optional-dependencies] or a dev dependency group:
-#       pytest, httpx (needed by FastAPI's TestClient)
-#   [tool.pytest.ini_options]
-#       testpaths = ["tests"]
-#
-# AVOID
-#   Unpinned surprises: after the first successful install, pin major versions.
+[project]
+name = "claimcheck-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi", "uvicorn[standard]", "pydantic", "pydantic-settings",
+  "sqlalchemy>=2.0", "psycopg[binary]", "pgvector",
+  "langgraph", "langgraph-checkpoint-postgres", "langchain-google-genai",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]   # without this, setuptools also finds data/ and tests/ and refuses to build
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

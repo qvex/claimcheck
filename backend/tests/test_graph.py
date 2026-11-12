@@ -1,8 +1,9 @@
-"""(Stretch) Agent graph routing tests, with no real LLM.
+"""(Stretch) GOAL: Prove the agent's routing and confirmation logic without a real LLM.
 
-SHOULD COVER
-- With a fake chat model that returns an add_expense tool call, the graph pauses at confirm (interrupt).
-  Resuming with approve inserts exactly one row. Resuming with reject inserts none.
-- With a fake model that returns plain text, the graph ends without calling any tool.
-- Use an in-memory checkpointer here, not Postgres.
+DONE WHEN
+  - A scripted fake model drives the graph through: plain reply (no tools), expense approved (one row), expense rejected (no rows).
+
+LOOK UP
+  - LangChain fake chat models
+  - LangGraph in-memory checkpointer
 """

@@ -1,18 +1,18 @@
-"""Data-access layer for expenses: the ONLY place that queries the expenses table.
+"""GOAL: Be the single gateway to the expenses table. The REST routes and the agent tools both go through it.
 
-Both the REST routes and the agent tools call these functions, so there's one tested path to the data.
+CONTRACT
+  Supports everything the API (spec section 7) and the agent tools (spec section 5) need: add, list with filters, delete, and totals.
 
-SHOULD CONTAIN
-- `add_expense(db, data: ExpenseCreate, source)` -> the created Expense.
-- `list_expenses(db, start=None, end=None, category=None)` -> list, newest first.
-- `delete_expense(db, expense_id)` -> bool (False if not found, so the route can return 404).
-- `summarize(db, start, end, category=None, group_by="category" | "day")` -> totals, computed in SQL
-  (GROUP BY + SUM), not by looping in Python.
-- A helper converting "YYYY-MM" into a (first_day, last_day) date range.
+CONSTRAINTS
+  - Queries are parameterized. No SQL built from strings.
+  - Totals are computed by the database, not by summing in Python.
+  - Deleting something that doesn't exist is distinguishable from success.
+  - Read operations never commit.
 
-AVOID
-- Raw SQL strings built with f-strings. Use the ORM / bound parameters only.
-- Committing inside list/summary functions (they're read-only).
+DONE WHEN
+  - Repository tests pass, including month boundaries and exact decimal sums.
+  - Neither routes/ nor agent/ contains a direct query on expenses.
 
-CONCEPTS PRACTICED: repository pattern, parameterized queries, SQL aggregation.
+LOOK UP
+  - SQLAlchemy 2.0 select() with group_by and func.sum
 """
